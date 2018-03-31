@@ -1,7 +1,7 @@
-#include "dijkstra.h"
-#include "dijkstra.cpp"
 #include "graphs.h"
 #include "graphs.cpp"
+#include "dijkstra.h"
+#include "dijkstra.cpp"
 
 using namespace std;
 
@@ -11,9 +11,11 @@ int main() {
 	
 	costMatrix graph = buildGraph(rowSize, columnSize);
 	//print(graph);
-	writeOutputFile("graphs.txt", graph);
-	costMatrix moreGraph = readFile("graphs.txt");
+	//writeOutputFile("graphs.txt", graph);
+	costMatrix moreGraph = readFile("unitTest.txt");
 
+	costMatrix anotherGraph = dijkstraAlgorithm(moreGraph);
+	print(anotherGraph);
 
 	return 0;
-}
+}	
