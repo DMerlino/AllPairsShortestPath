@@ -1,6 +1,16 @@
+/* 
+	Author: Daniel Kiel Merlino
+	Date Due: 04/02/2018
+	Course: CSCE 4110-001
+
+	Program: All Pairs Shortest Path Term Project
+*/
+
+
 #include "graphs.h"
 
 using namespace std;
+
 
 /* buildGraph function takes in two integer parameters, rows and columns, then builds a 
    two dimensional graph as an integer vector. This function uses srand(), time(), and 
@@ -8,7 +18,7 @@ using namespace std;
    The function returns the designed graph */
 costMatrix buildGraph(int rows, int columns) {
 	costMatrix graph(rows);
-	srand(time(0));
+	srand(time(NULL));
 
 	for (int i = 0; i < rows; i++) {
 		graph[i] = vector<int>(columns);
@@ -17,7 +27,7 @@ costMatrix buildGraph(int rows, int columns) {
 				graph[i][j] = 0;
 			} 
 			else {
-				graph[i][j] = rand() % 100;
+				graph[i][j] = rand() % 10;
 			}
 		}
 	}
