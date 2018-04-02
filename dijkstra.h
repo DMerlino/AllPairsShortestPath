@@ -18,3 +18,4 @@ using namespace std;
 costMatrix dijkstraAlgorithm(costMatrix);
 bool completeNodes(bool * nodesVisited, int);
 vector<int> storeInVector(int * tempArray, int size);
+ 
