@@ -39,7 +39,6 @@ vector<int> storeInVector(int * tempArray, int size) {
 	}
 	
 	return results;
-
 }
 
 
@@ -143,3 +142,5 @@ costMatrix dijkstraAlgorithm(costMatrix matrix) {
 
 	return values;
 }
+
+

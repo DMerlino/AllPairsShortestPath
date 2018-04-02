@@ -18,7 +18,6 @@ using namespace std;
    The function returns the designed graph */
 costMatrix buildGraph(int rows, int columns) {
 	costMatrix graph(rows);
-	srand(time(NULL));
 
 	for (int i = 0; i < rows; i++) {
 		graph[i] = vector<int>(columns);
@@ -27,7 +26,7 @@ costMatrix buildGraph(int rows, int columns) {
 				graph[i][j] = 0;
 			} 
 			else {
-				graph[i][j] = rand() % 10;
+				graph[i][j] = rand() % 1000 + 1;
 			}
 		}
 	}
@@ -59,10 +58,12 @@ void writeOutputFile(string fileName, costMatrix matrix) {
 	streambuf * coutBuffer = cout.rdbuf();
 
 	if (outFile.is_open()) {
+		// Redirects the outFile readbuffer to std::cout
 		cout.rdbuf(outFile.rdbuf());
 		print(matrix);
 	}
 
+	// Re-initializes the cout buffer back to a cout buffer
 	cout.rdbuf(coutBuffer);
 	outFile.close();
 }
@@ -82,21 +83,33 @@ costMatrix readFile(string fileName) {
 	int input;
 
 	if (inFile.is_open()) {
+		// Redirects the input readbuffer to std::cin
 		cin.rdbuf(inFile.rdbuf());
 
+		// While loop to read in line by line and run through the stream variable
 		while (getline(cin, stream)) {
 			stringstream moreStream(stream);
 			matrix.push_back(vector<int>(0));
 
+			// While there is input to read/stream
 			while(moreStream >> input) {
+				// Build the matrix
 				matrix[i].push_back(input);
 			}
 		
 		i++;
 		}
+
+		// Re-initialize the cin read buffer back to std::cin
+		cin.rdbuf(cinBuffer);
+		inFile.close();
+	}
+	
+	// Error handling for a file name error
+	else {
+		cout << "Error, file not found..." << endl;
+		exit(1);
 	}
 
-	cin.rdbuf(cinBuffer);
-	inFile.close();
 	return matrix;
 }

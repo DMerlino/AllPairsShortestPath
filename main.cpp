@@ -16,50 +16,84 @@
  */
 
 
+#include <time.h>
 #include "graphs.h"
 #include "graphs.cpp"
 #include "dijkstra.h"
 #include "dijkstra.cpp"
 #include "floyd.h"
 #include "floyd.cpp"
-#include <time.h>
+
 
 using namespace std;
 
 
-//clock_t time;
-
 int main(int argc, char * argv[]) {
-	//srand(time(NULL));
-	//int graphSize = rand() % 100;
-	int rows = 10;
-	int columns = 10;
+	clock_t dijkstraTime;
+	clock_t floydTime;
+	srand(time(NULL));
 	
+	// Sets a random generated number of vertices between 50 and 1000 
+	int graphSize = 50 + (rand() % (1000 - 50));
+	cout << "Randomly Generated Graph Size: " << graphSize << endl;
   
+  // Error handling
 	if (argc > 2) {
 		cout << endl;
 		cout << "Too many arguments...please use ./a.out and then either random or a text file" 
 		<< "name" << endl;
 	}
 
+	/* If the only command line argument is ./a.out, randomly generate the size of a graph
+		 and run both Dijkstra's and Floyd-Warshall's algorithms 
+	*/
 	if (argc == 1) {
-		costMatrix graph = buildGraph(rows, columns);
-		writeOutputFile("graph.txt", graph);
-		costMatrix moreGraph = readFile("graph.txt");
-		costMatrix dijkstraGraph = dijkstraAlgorithm(moreGraph);
-		costMatrix floydWarshallGraph = floydWarshall(moreGraph);
-		print(dijkstraGraph);
-		cout << endl;
-		print(floydWarshallGraph);
+		costMatrix graph = buildGraph(graphSize, graphSize);
+		
+		// Begin clock time for Dijkstra's Algorithm
+		dijkstraTime = clock();
+		costMatrix dijkstraGraph = dijkstraAlgorithm(graph);
+		// End clock time
+		dijkstraTime = clock() - dijkstraTime;
+		cout << "Dijkstra's Run Time: " << ((float)dijkstraTime/CLOCKS_PER_SEC) * 1000 << " ms"
+		<< endl;
+		
+		// Begin clock time for Floyd-Warshall
+		floydTime = clock();
+		costMatrix floydWarshallGraph = floydWarshall(graph);
+		// End clock time
+		floydTime = clock() - floydTime;
+		cout << "Floyd-Warshall Run Time: " << ((float)floydTime/CLOCKS_PER_SEC) * 1000 << " ms" 
+		<< endl;
+		
+		writeOutputFile("dijkstraGraph.txt", dijkstraGraph);
+		writeOutputFile("floydGraph.txt", floydWarshallGraph);
 	}
 	
+	/* Else, the user entered ./a.out and a text file in the command line. Read in the text
+	   file and run the given graph(s) through both Dijkstra's and Floyd-Warshall's Algorithms
+	*/
 	else {
 		costMatrix moreGraph = readFile(argv[1]);
+		
+		// Begin clock time for Dijkstra's
+		dijkstraTime = clock();
 		costMatrix dijkstraGraph = dijkstraAlgorithm(moreGraph);
+		// End clock time
+		dijkstraTime = clock() - dijkstraTime;
+		cout << "Dijkstra's Run Time: " << ((float)dijkstraTime/CLOCKS_PER_SEC) * 1000 << " ms"
+		<< endl;
+		
+		// Begin clock time Floyd-Warshall
+		floydTime = clock();
 		costMatrix floydWarshallGraph = floydWarshall(moreGraph);
-		print(dijkstraGraph);
-		cout << endl;
-		print(floydWarshallGraph);
+		// End clock time 
+		floydTime = clock() - floydTime;
+		cout << "Floyd-Warshall Run Time: " << ((float)floydTime/CLOCKS_PER_SEC) * 1000 << " ms"
+		<< endl;
+	
+		writeOutputFile("dijkstraGraph.txt", dijkstraGraph);
+		writeOutputFile("floydGraph.txt", floydWarshallGraph);
 	}
 
 	return 0;
