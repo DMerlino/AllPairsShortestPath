@@ -2,3 +2,5 @@
 *.docx
 *.exe
 *.out
+*.ods#
+*.docx#
